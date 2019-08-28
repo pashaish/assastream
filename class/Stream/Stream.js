@@ -9,29 +9,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const StreamCallback_1 = require("./StreamCallback");
+/**
+ * You can send data to the stream and create
+ * listeners that will respond to incoming data
+ */
 class Stream {
     constructor() {
         this.callBackStack = [];
     }
-    add(data) {
-        this._runCallbacks(data);
+    /**
+     * Sends data to a stream
+     */
+    add(...data) {
+        for (const dataUnit of data) {
+            this._runCallbacks(dataUnit);
+        }
     }
+    /**
+     * Adds a listener to the stream.
+     * If the listener returns false,
+     * then the listener will be deleted
+     */
     listen(callback) {
         this.callBackStack.push(new StreamCallback_1.default(callback));
     }
+    /**
+     * Performs callbacks of current listeners
+     */
     _runCallbacks(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-                // tslint:disable-next-line:forin
+            return new Promise((resolve) => {
                 for (const key in this.callBackStack) {
-                    const result = yield this.callBackStack[key].result(data);
-                    if (result === false) {
+                    if ((this.callBackStack[key].result(data)) === false) {
                         this.callBackStack[key] = null;
                     }
                 }
                 this.callBackStack = this.callBackStack.filter((func) => func != null);
                 resolve();
-            }));
+            });
         });
     }
 }

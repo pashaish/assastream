@@ -1,22 +1,36 @@
 import StreamCallback from "./StreamCallback";
 
+/**
+ * You can send data to the stream and create
+ * listeners that will respond to incoming data
+ */
 export default class Stream<T_data> {
   private callBackStack: Array<StreamCallback<T_data>> = [];
-
-  public add(data: T_data) {
-    this._runCallbacks(data);
+  /**
+   * Sends data to a stream
+   */
+  public add(...data: T_data[]) {
+    for (const dataUnit of data) {
+      this._runCallbacks(dataUnit);
+    }
   }
 
-  public listen(callback: (data: T_data) => Promise<any>) {
+  /**
+   * Adds a listener to the stream.
+   * If the listener returns false,
+   * then the listener will be deleted
+   */
+  public listen(callback: (data: T_data) => boolean) {
     this.callBackStack.push(new StreamCallback<T_data>(callback));
   }
 
+  /**
+   * Performs callbacks of current listeners
+   */
   private async _runCallbacks(data: T_data): Promise<void> {
-    return new Promise(async (resolve) => {
-      // tslint:disable-next-line:forin
+    return new Promise((resolve) => {
       for (const key in this.callBackStack) {
-        const result = await this.callBackStack[key].result(data);
-        if (result === false) {
+        if ((this.callBackStack[key].result(data)) === false) {
           this.callBackStack[key] = null;
         }
       }

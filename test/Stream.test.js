@@ -11,37 +11,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
 const Stream_1 = require("../class/Stream/Stream");
 const stream = new Stream_1.default();
-describe("Stream Add ", () => {
-    it("More Data", () => __awaiter(this, void 0, void 0, function* () {
-        let result;
-        stream.listen((data) => __awaiter(this, void 0, void 0, function* () {
-            result = data;
+describe("C: Stream", () => {
+    describe("M: add", () => {
+        it("A: listenner return true", () => __awaiter(this, void 0, void 0, function* () {
+            let result;
+            stream.listen((data) => {
+                result = data;
+                return true;
+            });
+            stream.add(5);
+            chai_1.expect(result).equal(5);
+            stream.add(0, 2.25);
+            chai_1.expect(result).equal(2.25);
         }));
-        stream.add(5);
-        chai_1.expect(result).equal(5);
-        stream.add(212);
-        chai_1.expect(result).equal(212);
-        stream.add(63);
-        chai_1.expect(result).equal(63);
-    }));
-    it("Post first 'add' return false", () => __awaiter(this, void 0, void 0, function* () {
-        let result;
-        stream.listen((data) => __awaiter(this, void 0, void 0, function* () {
-            result = data;
-            return false;
+        it("A: listenner return false", () => __awaiter(this, void 0, void 0, function* () {
+            let result;
+            stream.listen((data) => {
+                result = data;
+                return false;
+            });
+            stream.add(-265, -21);
+            chai_1.expect(result).equal(-265);
+            stream.add(11, 10.05);
+            chai_1.expect(result).equal(-265);
         }));
-        stream.add(265);
-        chai_1.expect(result).equal(265);
-        yield awaiter(5);
-        stream.add(11);
-        chai_1.expect(result).equal(265);
-    }));
-});
-const awaiter = (time) => __awaiter(this, void 0, void 0, function* () {
-    return new Promise((resolve) => {
-        // @ts-ignore
-        setTimeout(() => {
-            resolve();
-        }, time);
     });
 });

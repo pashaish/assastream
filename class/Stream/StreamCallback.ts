@@ -1,11 +1,12 @@
 export default class StreamCallback<T> {
-  private func: (data: T) => Promise<any>;
-  constructor(func: (data: T) => Promise<any>) {
+  private func: (data: T) => boolean;
+  constructor(func: (data: T) => boolean) {
     this.func = func;
   }
 
-  public async result(data: T): Promise<boolean> {
-    const result = await this.func(data);
+  /** Returns the result of the function with the argument passed */
+  public result(data: T): boolean {
+    const result = this.func(data);
     if (result === true) {
       return true;
     }
