@@ -25,4 +25,3 @@ export default class Stream<T_data> {
     });
   }
 }
-
