@@ -4,7 +4,6 @@ import Stream from "./class/Stream/Stream";
 const stream = new Stream<number>();
 
 stream.listen((data) => {
-    // @ts-ignore
     if (data === 1) {
         return false;
     }

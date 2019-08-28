@@ -5,7 +5,8 @@ import StreamCallback from "./StreamCallback";
  * listeners that will respond to incoming data
  */
 export default class Stream<T_data> {
-  private callBackStack: Array<StreamCallback<T_data>> = [];
+  private callbackStack: Array<StreamCallback<T_data>> = [];
+
   /**
    * Sends data to a stream
    */
@@ -20,8 +21,27 @@ export default class Stream<T_data> {
    * If the listener returns false,
    * then the listener will be deleted
    */
-  public listen(callback: (data: T_data) => boolean) {
-    this.callBackStack.push(new StreamCallback<T_data>(callback));
+  public listen(callback: (data: T_data) => void): StreamCallback<T_data> {
+    const streamCallback = new StreamCallback<T_data>(
+      callback,
+      this,
+      this.callbackStack.length,
+    );
+    this.callbackStack.push(streamCallback);
+    return streamCallback;
+  }
+
+  public removeListenner(id: number): boolean {
+    if (this.callbackStack[id] != null) {
+      this.callbackStack[id] = null;
+      this.callbackStack = this.callbackStack.filter((func) => func !== null);
+      this.callbackStack = this.callbackStack.map((func, index) => {
+        func.ID = index;
+        return func;
+      });
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -29,12 +49,10 @@ export default class Stream<T_data> {
    */
   private async _runCallbacks(data: T_data): Promise<void> {
     return new Promise((resolve) => {
-      for (const key in this.callBackStack) {
-        if ((this.callBackStack[key].result(data)) === false) {
-          this.callBackStack[key] = null;
-        }
+      // tslint:disable-next-line:forin
+      for (const key in this.callbackStack) {
+        this.callbackStack[key].result(data);
       }
-      this.callBackStack = this.callBackStack.filter((func) => func != null);
       resolve();
     });
   }

@@ -8,7 +8,7 @@ describe("C: StreamCallback", () => {
             result = data;
             return false;
         };
-        const callback = new StreamCallback<string>(func);
+        const callback = new StreamCallback<string>(func, 0);
         callback.result("Hello\n\r\lWorld");
         expect(result).equal("Hello\n\r\lWorld");
     });

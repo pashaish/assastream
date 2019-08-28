@@ -12,28 +12,35 @@ const chai_1 = require("chai");
 const Stream_1 = require("../class/Stream/Stream");
 const stream = new Stream_1.default();
 describe("C: Stream", () => {
-    describe("M: add", () => {
-        it("A: listenner return true", () => __awaiter(this, void 0, void 0, function* () {
-            let result;
+    describe("M: listen", () => {
+        it("A: Add Listenner", () => {
+            let result = 0;
             stream.listen((data) => {
                 result = data;
-                return true;
             });
-            stream.add(5);
-            chai_1.expect(result).equal(5);
-            stream.add(0, 2.25);
-            chai_1.expect(result).equal(2.25);
-        }));
-        it("A: listenner return false", () => __awaiter(this, void 0, void 0, function* () {
-            let result;
-            stream.listen((data) => {
+            stream.add(25);
+            chai_1.expect(result).equal(25);
+        });
+        it("A: Remove Listenner", () => {
+            let result = 0;
+            const listenner = stream.listen((data) => {
                 result = data;
-                return false;
             });
-            stream.add(-265, -21);
-            chai_1.expect(result).equal(-265);
-            stream.add(11, 10.05);
-            chai_1.expect(result).equal(-265);
-        }));
+            stream.add(25);
+            listenner.remove();
+            stream.add(251);
+            chai_1.expect(result).equal(25);
+        });
     });
+    it("M: add", () => __awaiter(this, void 0, void 0, function* () {
+        let result;
+        stream.listen((data) => {
+            result = data;
+            return true;
+        });
+        stream.add(5);
+        chai_1.expect(result).equal(5);
+        stream.add(0, 2.25);
+        chai_1.expect(result).equal(2.25);
+    }));
 });

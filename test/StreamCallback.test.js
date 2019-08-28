@@ -9,7 +9,7 @@ describe("C: StreamCallback", () => {
             result = data;
             return false;
         };
-        const callback = new StreamCallback_1.default(func);
+        const callback = new StreamCallback_1.default(func, 0);
         callback.result("Hello\n\r\lWorld");
         chai_1.expect(result).equal("Hello\n\r\lWorld");
     });

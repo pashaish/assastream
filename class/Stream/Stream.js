@@ -15,7 +15,7 @@ const StreamCallback_1 = require("./StreamCallback");
  */
 class Stream {
     constructor() {
-        this.callBackStack = [];
+        this.callbackStack = [];
     }
     /**
      * Sends data to a stream
@@ -31,7 +31,21 @@ class Stream {
      * then the listener will be deleted
      */
     listen(callback) {
-        this.callBackStack.push(new StreamCallback_1.default(callback));
+        const streamCallback = new StreamCallback_1.default(callback, this, this.callbackStack.length);
+        this.callbackStack.push(streamCallback);
+        return streamCallback;
+    }
+    removeListenner(id) {
+        if (this.callbackStack[id] != null) {
+            this.callbackStack[id] = null;
+            this.callbackStack = this.callbackStack.filter((func) => func !== null);
+            this.callbackStack = this.callbackStack.map((func, index) => {
+                func.ID = index;
+                return func;
+            });
+            return true;
+        }
+        return false;
     }
     /**
      * Performs callbacks of current listeners
@@ -39,12 +53,10 @@ class Stream {
     _runCallbacks(data) {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve) => {
-                for (const key in this.callBackStack) {
-                    if ((this.callBackStack[key].result(data)) === false) {
-                        this.callBackStack[key] = null;
-                    }
+                // tslint:disable-next-line:forin
+                for (const key in this.callbackStack) {
+                    this.callbackStack[key].result(data);
                 }
-                this.callBackStack = this.callBackStack.filter((func) => func != null);
                 resolve();
             });
         });

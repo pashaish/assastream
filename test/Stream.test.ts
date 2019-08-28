@@ -3,28 +3,36 @@ import Stream from "../class/Stream/Stream";
 
 const stream = new Stream<number>();
 describe("C: Stream", () => {
-  describe("M: add", () => {
-    it("A: listenner return true", async () => {
-      let result: number;
+  describe("M: listen", () => {
+    it("A: Add Listenner", () => {
+      let result = 0;
       stream.listen((data) => {
         result = data;
-        return true;
       });
-      stream.add(5);
-      expect(result).equal(5);
-      stream.add(0, 2.25);
-      expect(result).equal(2.25);
+      stream.add(25);
+      expect(result).equal(25);
     });
-    it("A: listenner return false", async () => {
-      let result: number;
-      stream.listen((data) => {
+    it("A: Remove Listenner", () => {
+      let result = 0;
+      const listenner = stream.listen((data) => {
         result = data;
-        return false;
       });
-      stream.add(-265, -21);
-      expect(result).equal(-265);
-      stream.add(11, 10.05);
-      expect(result).equal(-265);
+      stream.add(25);
+      listenner.remove();
+      stream.add(251);
+      expect(result).equal(25);
     });
+  });
+
+  it("M: add", async () => {
+    let result: number;
+    stream.listen((data) => {
+      result = data;
+      return true;
+    });
+    stream.add(5);
+    expect(result).equal(5);
+    stream.add(0, 2.25);
+    expect(result).equal(2.25);
   });
 });
