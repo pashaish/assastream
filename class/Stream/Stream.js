@@ -24,8 +24,8 @@ class Stream {
      */
     add(...data) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.wait(this.time);
             for (const dataUnit of data) {
+                yield this.wait(this.time);
                 this._runCallbacks(dataUnit);
             }
         });

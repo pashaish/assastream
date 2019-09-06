@@ -12,8 +12,8 @@ export default class Stream<T_data> {
    * Sends data to a stream
    */
   public async add(...data: T_data[]) {
-    await this.wait(this.time);
     for (const dataUnit of data) {
+      await this.wait(this.time);
       this._runCallbacks(dataUnit);
     }
   }
