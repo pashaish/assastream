@@ -6,11 +6,13 @@ import StreamCallback from "./StreamCallback";
  */
 export default class Stream<T_data> {
   private callbackStack: Array<StreamCallback<T_data>> = [];
+  private time: number = 0;
 
   /**
    * Sends data to a stream
    */
-  public add(...data: T_data[]) {
+  public async add(...data: T_data[]) {
+    await this.wait(this.time);
     for (const dataUnit of data) {
       this._runCallbacks(dataUnit);
     }
@@ -29,6 +31,11 @@ export default class Stream<T_data> {
     );
     this.callbackStack.push(streamCallback);
     return streamCallback;
+  }
+
+  public timeout(time: number): Stream<T_data> {
+    this.time = time;
+    return this;
   }
 
   public removeListenner(id: number): boolean {
@@ -54,6 +61,14 @@ export default class Stream<T_data> {
         this.callbackStack[key].result(data);
       }
       resolve();
+    });
+  }
+
+  private async wait(time: number) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      });
     });
   }
 }

@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -16,14 +17,18 @@ const StreamCallback_1 = require("./StreamCallback");
 class Stream {
     constructor() {
         this.callbackStack = [];
+        this.time = 0;
     }
     /**
      * Sends data to a stream
      */
     add(...data) {
-        for (const dataUnit of data) {
-            this._runCallbacks(dataUnit);
-        }
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.wait(this.time);
+            for (const dataUnit of data) {
+                this._runCallbacks(dataUnit);
+            }
+        });
     }
     /**
      * Adds a listener to the stream.
@@ -34,6 +39,10 @@ class Stream {
         const streamCallback = new StreamCallback_1.default(callback, this, this.callbackStack.length);
         this.callbackStack.push(streamCallback);
         return streamCallback;
+    }
+    timeout(time) {
+        this.time = time;
+        return this;
     }
     removeListenner(id) {
         if (this.callbackStack[id] != null) {
@@ -58,6 +67,15 @@ class Stream {
                     this.callbackStack[key].result(data);
                 }
                 resolve();
+            });
+        });
+    }
+    wait(time) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                });
             });
         });
     }
