@@ -1,4 +1,4 @@
-import StreamCallback from "./StreamCallback";
+import StreamCallback from "../StreamCallback/StreamCallback";
 
 /**
  * You can send data to the stream and create
@@ -6,14 +6,12 @@ import StreamCallback from "./StreamCallback";
  */
 export default class Stream<T_data> {
   private callbackStack: Array<StreamCallback<T_data>> = [];
-  private time: number = 0;
 
   /**
    * Sends data to a stream
    */
-  public async add(...data: T_data[]) {
+  public add(...data: T_data[]) {
     for (const dataUnit of data) {
-      await this.wait(this.time);
       this._runCallbacks(dataUnit);
     }
   }
@@ -31,11 +29,6 @@ export default class Stream<T_data> {
     );
     this.callbackStack.push(streamCallback);
     return streamCallback;
-  }
-
-  public timeout(time: number): Stream<T_data> {
-    this.time = time;
-    return this;
   }
 
   public removeListenner(id: number): boolean {
@@ -61,14 +54,6 @@ export default class Stream<T_data> {
         this.callbackStack[key].result(data);
       }
       resolve();
-    });
-  }
-
-  private async wait(time: number) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve();
-      });
     });
   }
 }

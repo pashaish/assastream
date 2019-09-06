@@ -1,7 +1,7 @@
 
 import { expect } from "chai";
-import Stream from "./../class/Stream/Stream";
-import StreamCallback from "./../class/Stream/StreamCallback";
+import StreamCallback from "../StreamCallback";
+import Stream from "../Stream";
 
 describe("C: StreamCallback", () => {
     it("M: result",  () => {
