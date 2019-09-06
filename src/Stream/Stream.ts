@@ -4,7 +4,7 @@ import StreamCallback from "../StreamCallback/StreamCallback";
  * You can send data to the stream and create
  * listeners that will respond to incoming data
  */
-export default class Stream<T_data> {
+export default class <T_data> {
   private callbackStack: Array<StreamCallback<T_data>> = [];
 
   /**

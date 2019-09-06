@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class StreamCallback {
+class default_1 {
     constructor(func, stream, id) {
         this.func = func;
         this.stream = stream;
@@ -17,4 +17,4 @@ class StreamCallback {
         return this.ID;
     }
 }
-exports.default = StreamCallback;
+exports.default = default_1;

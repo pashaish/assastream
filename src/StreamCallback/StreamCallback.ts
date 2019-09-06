@@ -1,6 +1,6 @@
-import Stream from "./Stream";
+import Stream from "../Stream/Stream";
 
-export default class StreamCallback<T> {
+export default class <T> {
   public ID: number;
   private func: (data: T) => void;
   private stream: Stream<T>;

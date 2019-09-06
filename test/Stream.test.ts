@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Stream from "../Stream";
+import Stream from "../src/Stream/Stream";
 
 const stream = new Stream<number>();
 describe("C: Stream", () => {

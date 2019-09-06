@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai_1 = require("chai");
-const Stream_1 = require("./../class/Stream/Stream");
-const StreamCallback_1 = require("./../class/Stream/StreamCallback");
+const Stream_1 = require("../src/Stream/Stream");
+const StreamCallback_1 = require("../src/StreamCallback/StreamCallback");
 describe("C: StreamCallback", () => {
     it("M: result", () => {
         let result = "";

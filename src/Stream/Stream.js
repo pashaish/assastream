@@ -9,26 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const StreamCallback_1 = require("./StreamCallback");
+const StreamCallback_1 = require("../StreamCallback/StreamCallback");
 /**
  * You can send data to the stream and create
  * listeners that will respond to incoming data
  */
-class Stream {
+class default_1 {
     constructor() {
         this.callbackStack = [];
-        this.time = 0;
     }
     /**
      * Sends data to a stream
      */
     add(...data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            for (const dataUnit of data) {
-                yield this.wait(this.time);
-                this._runCallbacks(dataUnit);
-            }
-        });
+        for (const dataUnit of data) {
+            this._runCallbacks(dataUnit);
+        }
     }
     /**
      * Adds a listener to the stream.
@@ -39,10 +35,6 @@ class Stream {
         const streamCallback = new StreamCallback_1.default(callback, this, this.callbackStack.length);
         this.callbackStack.push(streamCallback);
         return streamCallback;
-    }
-    timeout(time) {
-        this.time = time;
-        return this;
     }
     removeListenner(id) {
         if (this.callbackStack[id] != null) {
@@ -70,14 +62,5 @@ class Stream {
             });
         });
     }
-    wait(time) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                });
-            });
-        });
-    }
 }
-exports.default = Stream;
+exports.default = default_1;
