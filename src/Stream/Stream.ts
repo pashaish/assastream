@@ -33,8 +33,7 @@ export default class <T_data> {
 
   public removeListenner(id: number): boolean {
     if (this.callbackStack[id] != null) {
-      this.callbackStack[id] = null;
-      this.callbackStack = this.callbackStack.filter((func) => func !== null);
+      this.callbackStack = this.callbackStack.filter((func, i) => i !== id);
       this.callbackStack = this.callbackStack.map((func, index) => {
         func.ID = index;
         return func;
