@@ -1,7 +1,7 @@
 {
     "files.exclude": {
-        "node_modules/": true,
-        "class/**/*.js": true,
-        "index.js": true,
+        // "node_modules/": true,
+        // "class/**/*.js": true,
+        // "index.js": true,
     },
 }
