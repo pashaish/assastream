@@ -1,4 +1,4 @@
-class Type {
+class Type<T> {
   public static getTypeFromCtr(obj: any) {
     return obj.constructor.toString().replace(/(function|class)\s+(\S+)\b.+/, "$2");
   }
@@ -29,48 +29,35 @@ class Type {
     if (!equalProto || !equalConstructor ) {
       throw new Error(`TypeError: ${valTypeName} !== ${instanceValTypeName}`);
     }
-    Object.preventExtensions(val);
   }
 
 
-  public value?: any;
-  private typeInstance?: any;
-  private _value?: any;
-  private _typeInstance?: any;
-  constructor(Type: any, value: any) {
+  protected _value?: T;
+  public value!: T;
+  protected _typeInstance: T;
+  constructor(Type: T, value?: T) {
     
     this._value = value;
     this._typeInstance = Type;
-
-    this.checkType();
+    this.checkType(value);
 
     this.defineProperty.apply(this);
   }
   private defineProperty() {
     Object.defineProperty(this, "value", {
       get: () => {
-        this.checkType();
         return this._value;
       },
       set: (val) => {
-        Type.checkType(val, this.typeInstance);
+        this.checkType(val);
         this._value = val;
       },
     });
-    Object.defineProperty(this, "typeInstance", {
-      get: () => {
-        this.checkType();
-        return this._typeInstance;
-      },
-      set: (val) => {
-        Type.checkType(val, this.typeInstance);
-        this._typeInstance = val;
-      },
-    });
-
   }
-  public checkType() {
-    Type.checkType(this._value, this._typeInstance);
+  public checkType(val?: T) {
+    if (val) {
+      Type.checkType(val, this._typeInstance);
+    }
   }
 }
 

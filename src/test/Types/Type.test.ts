@@ -20,6 +20,7 @@ describe("C: Type", () => {
     expect(new Type("Hello World", new String()));
     const t = new Type(0, new Number());
     t.value = 365;
+    // @ts-ignore
     expect(errorTrap(() => {t.value = "Hello"})).equal(true);
     expect(t.value).equal(365);
   });

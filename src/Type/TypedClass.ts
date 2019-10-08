@@ -4,7 +4,7 @@ class TypedClass {
   constructor() {
   }
   protected runTypingProperties() {
-    const types: Map<String, Type> = new Map();
+    const types: Map<String, Type<any>> = new Map();
     for (const key in this) {
       types.set(key, new Type(this[key], this[key]));
       Object.defineProperty(this, key, {

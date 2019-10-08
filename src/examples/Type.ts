@@ -1,4 +1,6 @@
 import TypedClass from "../Type/TypedClass";
+import TArray from "../Type/TArray";
+import Type from "../Type/Type";
 
 class PostClass extends TypedClass {
   constructor() {
@@ -18,7 +20,10 @@ class TestClass extends TypedClass {
   }
 }
 
-const test = new TestClass();
+const arr = new TArray(new Type(new Number));
 
 
-test.boolean = true;
+// @ts-ignore
+// str.value = 14;
+
+arr.value[0] = "5";
