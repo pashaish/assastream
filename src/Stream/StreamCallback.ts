@@ -1,4 +1,4 @@
-import Stream from "../Stream/Stream";
+import Stream from "./Stream";
 
 export default class <T> {
   public ID: number;

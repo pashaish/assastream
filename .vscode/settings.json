@@ -1,7 +1,3 @@
 {
-    "files.exclude": {
-        // "node_modules/": true,
-        // "class/**/*.js": true,
-        // "index.js": true,
-    },
+    "mochaExplorer.files": "lib/test/**/*.js"
 }

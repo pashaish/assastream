@@ -1,4 +1,4 @@
-import StreamCallback from "../StreamCallback/StreamCallback";
+import StreamCallback from "./StreamCallback";
 
 /**
  * You can send data to the stream and create
@@ -48,7 +48,6 @@ export default class <T_data> {
    */
   private async _runCallbacks(data: T_data): Promise<void> {
     return new Promise((resolve) => {
-      // tslint:disable-next-line:forin
       for (const key in this.callbackStack) {
         this.callbackStack[key].result(data);
       }

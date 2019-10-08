@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Stream from "../src/Stream/Stream";
+import Stream from "../../Stream/Stream";
 
 const stream = new Stream<number>();
 describe("C: Stream", () => {
@@ -9,6 +9,7 @@ describe("C: Stream", () => {
       stream.listen((data) => {
         result = data;
       });
+      expect(typeof result === "number").equal(true);
       stream.add(25);
       expect(result).equal(25);
     });
@@ -17,6 +18,7 @@ describe("C: Stream", () => {
       const listenner = stream.listen((data) => {
         result = data;
       });
+      expect(typeof result === "number").equal(true);
       stream.add(25);
       listenner.remove();
       stream.add(251);
@@ -24,12 +26,13 @@ describe("C: Stream", () => {
     });
   });
 
-  it("M: add", async () => {
-    let result: number;
+  it("M/A: add", async () => {
+    let result = 0;
     stream.listen((data) => {
       result = data;
       return true;
     });
+    expect(typeof result === "number").equal(true);
     stream.add(5);
     expect(result).equal(5);
     stream.add(0, 2.25);

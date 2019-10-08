@@ -1,10 +1,10 @@
 
 import { expect } from "chai";
-import Stream from "../src/Stream/Stream";
-import StreamCallback from "../src/StreamCallback/StreamCallback";
+import Stream from "../../Stream/Stream";
+import StreamCallback from "../../Stream/StreamCallback";
 
 describe("C: StreamCallback", () => {
-    it("M: result",  () => {
+    it("M/A: result",  () => {
         let result: string = "";
         const func = (data: string): boolean => {
             result = data;
